@@ -1,0 +1,28 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.remove-btn {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+}
+
+/* body {
+  background-color: burlywood;
+} */
+
+/* .middleBlock {
+  background-color: aquamarine;
+} */
+
+.myForm {
+  height: 250px;
+  align-items: center;
+  justify-content: center;
+}
+
+/* .liDiv {
+  margin-right: 0.75rem;
+  padding: 1rem 0 1rem 0
+} */
