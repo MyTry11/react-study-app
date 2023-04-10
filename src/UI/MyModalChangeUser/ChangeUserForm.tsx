@@ -1,18 +1,6 @@
-import React, { useState, ReactNode } from "react";
-import MyInput from "./UI/inputs/MyInput";
-import MyButton from "./UI/button/MyButton";
-
-interface UserType {
-  name: string;
-  email: string;
-  phone: string;
-  id: number;
-}
-interface Props {
-  create: (value: object) => void;
-  close: () => void;
-}
-
+import React, { useState } from "react";
+import MyInput from "../inputs/MyInput";
+import MyButton from "../button/MyButton";
 const initUser = {
   name: "",
   email: "",
@@ -20,7 +8,7 @@ const initUser = {
   id: 777,
 };
 
-const UserForm: React.FC<Props> = ({ create, close, testFunc }) => {
+const ChangeUserForm = ({ close, editUser, userId }) => {
   const [user, setUser] = useState<UserType>(initUser);
   const [nameDirty, setNameDirty] = useState(false);
   const [nameError, setNameError] = useState("Enter first and second name");
@@ -28,15 +16,28 @@ const UserForm: React.FC<Props> = ({ create, close, testFunc }) => {
   const [emailError, setEmailError] = useState("Enter email");
   const [phoneDirty, setPhoneDirty] = useState(false);
   const [phoneError, setPhoneError] = useState("Enter phone");
-  const addNewUser = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const closeModal = () => {
+    close(false);
+  };
+  const changeUserBtn = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     const newUser = {
       ...user,
     };
-    if (!nameError && !emailError && !phoneError) {
-      create(newUser);
-      setUser(initUser);
-    }
+    editUser(newUser);
+
+    setUser(initUser);
+
+    // console.log(newUser);
+    // changeUser(newUser);
+
+    // console.log(newUser);
+    // console.log(newUser.id);
+
+    // if (!nameError && !emailError && !phoneError) {
+    //   create(newUser);
+    //   setUser(initUser);
+    // }
   };
 
   const onChangeName = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -70,7 +71,7 @@ const UserForm: React.FC<Props> = ({ create, close, testFunc }) => {
 
   const closeForm = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    close();
+    close(false);
   };
   const blurHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     switch (e.target.placeholder) {
@@ -85,10 +86,7 @@ const UserForm: React.FC<Props> = ({ create, close, testFunc }) => {
         break;
     }
   };
-  // console.log(testFunc);
-
   return (
-    // w-1/2 flex flex-col pt-8 h-96	bg-red-100
     <form className="myForm flex flex-col align-center h-full pt">
       {nameDirty && nameError && (
         <div style={{ color: "red" }}>{nameError}</div>
@@ -118,11 +116,11 @@ const UserForm: React.FC<Props> = ({ create, close, testFunc }) => {
         placeholder="Phone"
       ></MyInput>
       <div className="flex ">
-        <MyButton onClick={addNewUser}>Add User</MyButton>
+        <MyButton onClick={changeUserBtn}>Edit User</MyButton>
         <MyButton onClick={closeForm}>Close form</MyButton>
       </div>
     </form>
   );
 };
 
-export default UserForm;
+export default ChangeUserForm;

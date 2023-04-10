@@ -21,7 +21,6 @@ const MyModal: React.FC<Props> = ({ visible, setVisible, children }) => {
       <div className={cl.myModalContent} onClick={(e) => e.stopPropagation()}>
         {children}
       </div>
-      {/* <div className="bg-black text-2xl h-96">dsfsdfsdf</div> */}
     </div>
   );
 };

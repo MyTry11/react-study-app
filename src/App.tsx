@@ -9,65 +9,75 @@ import SortUsers from "./UI/SortUsers";
 import FindUser from "./UI/FindUser";
 import UsersList from "./UsersList";
 import TestSelect from "./UI/TestSelect";
+import { isChecked } from "./helpers";
 
-type UserType = {
-  name: string;
-  email: string;
-  phone: string;
-  id: string;
-  // favourite?: boolean;
+export type UserType = {
+  name: string | undefined;
+  email: string | undefined;
+  phone: string | undefined;
+  id: string | undefined;
+  favourite?: boolean;
 };
 
 export default function App() {
   const [users, setUsers] = useState<UserType[]>([]);
-  // const [usersCopy, setUsersCopy] = useState<object>({...users})
   const [inputValue, setInputValue] = useState<string>("");
   const [type, setType] = useState<keyof UserType>("name");
-  // const [deleted, setDeleted] = useState<boolean>(true)
   const [modal, setModal] = useState<boolean>(false);
+  const [modalChangeUser, setModalChangeUser] = useState<boolean>(false);
   const [selectedSort, setSelectedSort] = useState<string>("");
   const [favourite, setFavourite] = useState<boolean[]>([]);
+  const [currentUser, setCurrentUser] = useState<UserType>({
+    name: "",
+    email: "",
+    phone: "",
+    id: 777,
+  });
   const createUser = (newUser: UserType) => {
-    //опаздываем на 1 действие
     setUsers([...users, newUser]);
     setModal(false);
-    console.log(users);
+    console.log(newUser);
   };
-  const closeModalEsc = (e: { key: string }) => {
-    if (e.key === "Escape") setModal(false);
+  const editUser = (newUser) => {
+    const newUsers = [...users];
+    newUsers.splice(currentUser.index, 1, newUser);
+    setUsers(newUsers);
+
+    setModalChangeUser(false);
   };
-  // const removeButton = (index: number) => {
-  //   // setDeleted((deleted) => !deleted)
-  //   const newUsers = users.filter((e, i) => i !== index)
-  //   setUsers(newUsers)
-  // }
-  const removeButtonCheckbox = (users: UserType[], chekedState: boolean[]) => {
-    const newUsers = users.filter((e, i) => chekedState[i] !== true);
-    users.forEach((e, i) =>
-      chekedState[i] === true ? (chekedState[i] = false) : chekedState
+  const showUser = (user) => {
+    setCurrentUser(user);
+    // console.log(currentUser);
+    // console.log(user);
+  };
+
+  const removeButtonCheckbox = (selectedUsers: UserType[]) => {
+    const newUsers = users.filter(
+      (user) =>
+        !selectedUsers.find((selectedUser) => selectedUser.id === user.id)
     );
     setUsers(newUsers);
   };
-  const addToFavourite = (users: UserType[], chekedState: boolean[]) => {
-    users.forEach((e, i) => {
-      if (chekedState[i] === true) {
-        e.favourite = true;
-        chekedState[i] = false;
-        console.log(chekedState[i]);
+
+  const addToFavourite = (selectedUsers: UserType[]) => {
+    const newUsers = users.map((user) => {
+      if (isChecked(selectedUsers, user)) {
+        return { ...user, favourite: true };
       }
 
-      // e.favourite = chekedState[i] === true ? true : false;
+      return user;
     });
-    setUsers(users);
+    setUsers(newUsers);
   };
-  const removeFromFavourite = (users: UserType[], chekedState: boolean[]) => {
-    users.forEach((e, i) => {
-      if (chekedState[i] === true && e.favourite == true) {
-        e.favourite = false;
-        chekedState[i] = false;
-        console.log(chekedState[i]);
+  const removeFromFavourite = (selectedUsers: UserType[]) => {
+    const newUsers = users.map((user) => {
+      if (isChecked(selectedUsers, user)) {
+        return { ...user, favourite: false };
       }
+
+      return user;
     });
+    setUsers(newUsers);
   };
   const onFilter = (users: UserType[]) => {
     return users.filter((user) => {
@@ -99,15 +109,10 @@ export default function App() {
         <button
           className="rounded-lg bg-white p-2"
           onClick={() => setModal(true)}
-          onKeyDown={closeModalEsc}
         >
           Create user
         </button>
-        <MyModal
-          visible={modal}
-          setVisible={setModal}
-          onKeyDown={closeModalEsc}
-        >
+        <MyModal visible={modal} setVisible={setModal}>
           <UserForm
             create={createUser}
             close={() => setModal(false)}
@@ -124,10 +129,16 @@ export default function App() {
         <UsersList
           users={users}
           onFilter={onFilter}
-          // removeButton={removeButton}
           removeButtonCheckbox={removeButtonCheckbox}
           addToFavourite={addToFavourite}
           removeFromFavourite={removeFromFavourite}
+          createUser={createUser}
+          modalChangeUser={modalChangeUser}
+          setModalChangeUser={setModalChangeUser}
+          editUser={editUser}
+          currentUser={currentUser}
+          setCurrentUser={setCurrentUser}
+          showUser={showUser}
         ></UsersList>
       </div>
       <div className="rightBlock bg-zinc-400 rounded-lg w-1/6 p-4">
