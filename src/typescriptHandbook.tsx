@@ -1,9 +1,8 @@
 import React, { useState, ReactNode } from "react";
 
 const HandBook = () => {
-  // const num: number = 1
-  // const arr: number[] = [1, 2, 3]
-  // arr.
+  // const num: number = 1;
+  // const arr: number[] = [1, 2, 3];
   // явные null undefined let n: null = null; let u: undefined = undefined
   // кортеж let arr: [string, number]; arr = ['Vasia', 23]
   // void Функция, которая ничего не возвращает, возвращает значение void   ():void {}
@@ -18,8 +17,9 @@ const HandBook = () => {
   // const ro_arr2: Readonly<Array<string>> = ['a', 'b', 'c']
   // const ro_arr3: ReadonlyArray<string> = ['a', 'b', 'c']
 
-  //any - не указываем тип, при работе можем вызвать ошибку и не увидеть на этапе разработки
-  //unknown - тоже не указываем тип, но при работе необходимо вручную указывать типы перменных, без этого работать ничего не будет
+  // // any - не указываем тип, при работе можем вызвать ошибку и не увидеть на этапе разработки
+  // // unknown - тоже не указываем тип, но при работе необходимо вручную указывать типы перменных, без этого работать ничего не будет
+  // // нужно при получении каких-то данных
   // const obj: unknown = {
   //   a: 1,
   //   b: 2,
@@ -37,18 +37,18 @@ const HandBook = () => {
   //   console.log(obj.add(1, 2))//не вызовет ошибку благодаря указанным типам
   // }
 
-  // Литеральные типы - описать точное значение
+  // // Литеральные типы - описать точное значение
   // let strVal: 'oneValue' | 'anotherValue'
   // strVal = 'differentValue' //ошибка
-  // same for numbers
+  // // same for numbers
 
   //   let explicitType: false
   //   explicitType = true //error
   //   explicitType = false
 
-  // Type alias псевдонимы типов
-  // type myString: string
-  // type numberOrBoolean: number | boolean
+  // // Type alias псевдонимы типов
+  // type myString = string
+  // type numberOrBoolean = number | boolean
 
   // let str: myString
   // let numOrBool: numberOrBoolean
@@ -63,7 +63,7 @@ const HandBook = () => {
   // type Colors = 'black' | 'white' | 'blue' | 'yellow'
   // let color: Colors = 'black'
 
-  // enums
+  // // enums
   // enum Season { Winter, Spring, Summer, Autumn };
   // let current: Season = Season.Summer;
   // console.log(current);       // 2
@@ -93,10 +93,10 @@ const HandBook = () => {
   // }
   // console.log(func1('John', 'JS', 'TS'));
 
-  // Class
+  // // Class
 
-  // модификаторы доступа
-  // public private protected readonly
+  // // модификаторы доступа
+  // // public private protected readonly
   // class FooBase{
   //     public a: number = 1
   //     private b: number = 2//элемент класса не может быть доступен за пределами класса,
@@ -108,29 +108,29 @@ const HandBook = () => {
   //     }
 
   // }
-  class FooBase1 {
-    static val = "123"; //статическая переменная, обращаться не через this, а через FooBase1.val
-    constructor(
-      public a: number = 1, //при объявлении переменных внутри скобок конструктора необходимо указать модификатор доступа
-      public b: string = "some string",
-      private c: number = 3
-    ) {
-      // this.a = a
-      // this.b = b;
-      // this.c = c
-    }
-    someMethod(): string {
-      return FooBase1.val;
-    }
-    setPrivateC(c: number) {
-      this.c = c;
-    } //методы могут менять приватное поле
-    set myPrivateC(c: number) {
-      this.c = c;
-    } //сеттер меняет приватное поле
-  }
+  // class FooBase1 {
+  //   static val = "123"; //статическая переменная, обращаться не через this, а через FooBase1.val
+  //   constructor(
+  //     public a: number = 1, //при объявлении переменных внутри скобок конструктора необходимо указать модификатор доступа
+  //     public b: string = "some string",
+  //     private c: number = 3
+  //   ) {
+  //     // this.a = a
+  //     // this.b = b;
+  //     // this.c = c
+  //   }
+  //   someMethod(): string {
+  //     return FooBase1.val;
+  //   }
+  //   setPrivateC(c: number) {
+  //     this.c = c;
+  //   } //методы могут менять приватное поле
+  //   set myPrivateC(c: number) {
+  //     this.c = c;
+  //   } //сеттер меняет приватное поле
+  // }
 
-  const foo1 = new FooBase1();
+  // const foo1 = new FooBase1();
 
   // foo1.setPrivateC(100)
   // foo1.myPrivateC = 1400
@@ -151,6 +151,12 @@ const HandBook = () => {
   // }
   // const cat = new Cat()
 
+  // interface Some {
+  //   a: string;
+  //   b: string;
+  //   c: number;
+  // }
+  // const [someState, setSomeState] = useState<keyof Some>("a");
   // Наследование
   // class Nasledovanie {
   //     constructor(public name: string, public age: number ){}
@@ -177,8 +183,8 @@ const HandBook = () => {
   //     nickName: 'Monster'
   // }
 
-  // Interface надстройка над объектом для описания типов полей объекта
-  // Interface похож на Type, но имеет больше возможностей для работы с объектами
+  // // Interface надстройка над объектом для описания типов полей объекта
+  // // Interface похож на Type, но имеет больше возможностей для работы с объектами
   // interface User {
   //     name: string,
   //     age: number,

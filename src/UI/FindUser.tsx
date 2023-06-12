@@ -2,7 +2,7 @@ import React from "react";
 
 interface Props {
   value: string;
-  onChange: (value: string) => string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 const FindUser: React.FC<Props> = ({ value, onChange }) => {

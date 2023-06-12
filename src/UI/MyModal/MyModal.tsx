@@ -1,6 +1,6 @@
 import React from "react";
 import cl from "./MyModal.module.css";
-
+import { UserType } from "../select/MySelect";
 interface Props {
   visible: boolean;
   setVisible: (value: boolean) => void;

@@ -7,18 +7,27 @@ const initUser = {
   phone: "",
   id: 777,
 };
+type UserType = {
+  name: string;
+  email: string;
+  phone: string;
+  id: number;
+  favourite?: boolean;
+};
 
-const ChangeUserForm = ({ close, editUser, userId }) => {
-  const [user, setUser] = useState<UserType>(initUser);
+interface Props {
+  close: (value: boolean) => void;
+  editUser: (value: UserType) => void;
+}
+
+const ChangeUserForm: React.FC<Props> = ({ close, editUser }) => {
+  const [user, setUser] = useState(initUser);
   const [nameDirty, setNameDirty] = useState(false);
   const [nameError, setNameError] = useState("Enter first and second name");
   const [emailDirty, setEmailDirty] = useState(false);
   const [emailError, setEmailError] = useState("Enter email");
   const [phoneDirty, setPhoneDirty] = useState(false);
   const [phoneError, setPhoneError] = useState("Enter phone");
-  const closeModal = () => {
-    close(false);
-  };
   const changeUserBtn = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     const newUser = {
@@ -27,17 +36,6 @@ const ChangeUserForm = ({ close, editUser, userId }) => {
     editUser(newUser);
 
     setUser(initUser);
-
-    // console.log(newUser);
-    // changeUser(newUser);
-
-    // console.log(newUser);
-    // console.log(newUser.id);
-
-    // if (!nameError && !emailError && !phoneError) {
-    //   create(newUser);
-    //   setUser(initUser);
-    // }
   };
 
   const onChangeName = (e: React.ChangeEvent<HTMLInputElement>) => {

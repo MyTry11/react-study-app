@@ -1,15 +1,10 @@
 import React, { useState, ReactNode } from "react";
 import MyInput from "./UI/inputs/MyInput";
 import MyButton from "./UI/button/MyButton";
+import { UserType } from "./App";
 
-interface UserType {
-  name: string;
-  email: string;
-  phone: string;
-  id: number;
-}
 interface Props {
-  create: (value: object) => void;
+  create: (value: UserType) => void;
   close: () => void;
 }
 
@@ -20,7 +15,7 @@ const initUser = {
   id: 777,
 };
 
-const UserForm: React.FC<Props> = ({ create, close, testFunc }) => {
+const UserForm: React.FC<Props> = ({ create, close }) => {
   const [user, setUser] = useState<UserType>(initUser);
   const [nameDirty, setNameDirty] = useState(false);
   const [nameError, setNameError] = useState("Enter first and second name");

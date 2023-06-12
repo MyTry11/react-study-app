@@ -8,25 +8,25 @@ import MySelect from "./UI/select/MySelect";
 import SortUsers from "./UI/SortUsers";
 import FindUser from "./UI/FindUser";
 import UsersList from "./UsersList";
-import TestSelect from "./UI/TestSelect";
 import { isChecked } from "./helpers";
+import { UserT } from "./UI/select/MySelect";
 
 export type UserType = {
-  name: string | undefined;
-  email: string | undefined;
-  phone: string | undefined;
-  id: string | undefined;
+  name: string;
+  email: string;
+  phone: string;
+  id: number;
   favourite?: boolean;
+  index?: number;
 };
 
 export default function App() {
   const [users, setUsers] = useState<UserType[]>([]);
   const [inputValue, setInputValue] = useState<string>("");
-  const [type, setType] = useState<keyof UserType>("name");
+  const [type, setType] = useState<UserT>("name");
   const [modal, setModal] = useState<boolean>(false);
   const [modalChangeUser, setModalChangeUser] = useState<boolean>(false);
-  const [selectedSort, setSelectedSort] = useState<string>("");
-  const [favourite, setFavourite] = useState<boolean[]>([]);
+  const [selectedSort, setSelectedSort] = useState<UserT>("name");
   const [currentUser, setCurrentUser] = useState<UserType>({
     name: "",
     email: "",
@@ -36,19 +36,13 @@ export default function App() {
   const createUser = (newUser: UserType) => {
     setUsers([...users, newUser]);
     setModal(false);
-    console.log(newUser);
   };
-  const editUser = (newUser) => {
+  const editUser = (newUser: UserType) => {
     const newUsers = [...users];
-    newUsers.splice(currentUser.index, 1, newUser);
+    newUsers.splice(Number(currentUser.index), 1, newUser);
     setUsers(newUsers);
 
     setModalChangeUser(false);
-  };
-  const showUser = (user) => {
-    setCurrentUser(user);
-    // console.log(currentUser);
-    // console.log(user);
   };
 
   const removeButtonCheckbox = (selectedUsers: UserType[]) => {
@@ -80,20 +74,24 @@ export default function App() {
     setUsers(newUsers);
   };
   const onFilter = (users: UserType[]) => {
-    return users.filter((user) => {
+    return users.filter((user: UserType) => {
       if (type == "phone") {
         return user[type]
           .replaceAll(/-|\ /g, "")
           .includes(inputValue.replaceAll(/-|\ /g, ""));
       }
-      return user[type].toLowerCase().includes(inputValue.toLowerCase());
+      if (type === "name" || type === "email") {
+        return user[type].toLowerCase().includes(inputValue.toLowerCase());
+      } else {
+        return false;
+      }
     });
   };
-  const sortUsers = (selectedSort: keyof UserType) => {
+  const sortUsers = (selectedSort: UserT) => {
     setSelectedSort(selectedSort);
     setUsers(
       [...users].sort((a: UserType, b: UserType) =>
-        a[selectedSort].localeCompare(b[selectedSort])
+        a[selectedSort] ? a[selectedSort].localeCompare(b[selectedSort]) : null
       )
     );
   };
@@ -105,7 +103,6 @@ export default function App() {
   return (
     <main className="main flex justify-around pt-8 bg-zinc-500 ">
       <div className="leftBlock bg-zinc-400 rounded-lg w-1/6 p-4 flex flex-col">
-        {/* <TestSelect></TestSelect> */}
         <button
           className="rounded-lg bg-white p-2"
           onClick={() => setModal(true)}
@@ -132,17 +129,18 @@ export default function App() {
           removeButtonCheckbox={removeButtonCheckbox}
           addToFavourite={addToFavourite}
           removeFromFavourite={removeFromFavourite}
-          createUser={createUser}
           modalChangeUser={modalChangeUser}
           setModalChangeUser={setModalChangeUser}
           editUser={editUser}
-          currentUser={currentUser}
-          setCurrentUser={setCurrentUser}
-          showUser={showUser}
         ></UsersList>
       </div>
       <div className="rightBlock bg-zinc-400 rounded-lg w-1/6 p-4">
-        <SortUsers onChange={(e) => setType(e.target.value)}></SortUsers>
+        <SortUsers
+          onChange={(e) => {
+            const target = e.target as HTMLInputElement;
+            setType(target.value as UserT);
+          }}
+        ></SortUsers>
         <MySelect
           value={selectedSort}
           onChange={sortUsers}

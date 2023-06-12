@@ -2,12 +2,11 @@ import React from "react";
 import cl from "./MyModalChangeUser.module.css";
 
 interface Props {
-  visible: boolean;
-  setVisible: (value: boolean) => void;
   children: JSX.Element;
+  modalChangeUser: boolean;
+  setModalChangeUser: (modalChangeUser: boolean) => void;
 }
 const MyModalChangeUser: React.FC<Props> = ({
-  user,
   modalChangeUser,
   setModalChangeUser,
   children,
